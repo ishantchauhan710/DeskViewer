@@ -2,14 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import Loading from "../../components/Loading";
 import { useNavigate } from "react-router-dom";
 import SessionInfo from "../../components/SessionInfo";
-import { useDispatch, useSelector } from "react-redux";
-import { setShowSessionDialog } from "../../states/connectionSlice";
+import {useSelector } from "react-redux";
 import { Peer } from "peerjs";
 
 const ConnectionScreen = ({ callRef }) => {
   const [remoteConnecting, setRemoteConnecting] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const [userId, setUserId] = useState("1234567890");
   const [remoteId, setRemoteId] = useState("1234567890");
@@ -55,7 +53,8 @@ const ConnectionScreen = ({ callRef }) => {
       },
     };
 
-    const peer = new Peer(uid); //, peerOptions);
+    //FOR CUSTOM SERVER: const peer = new Peer(uid,peerOptions);
+    const peer = new Peer(uid);
 
     // Receive call
     peer.on("call", (call) => {
@@ -66,7 +65,7 @@ const ConnectionScreen = ({ callRef }) => {
             // Answer call with screen's display data stream
             call.answer(mediaStream);
 
-            // FOR AUDIO
+            // FOR PLAYING AUDIO OF REMOTE
             // call.on("stream", function (remoteStream) {
             //   remoteVideoRef.current.srcObject = remoteStream;
             //   remoteVideoRef.current.play();
@@ -94,13 +93,7 @@ const ConnectionScreen = ({ callRef }) => {
 
         callRef.current = call;
         navigate("/app");
-        // When call is accepted
-        // call.on("stream", (remoteStream) => {
-        // });
       });
-
-    //navigate("/app");
-    //dispatch(setShowSessionDialog(true));
   };
 
   return (

@@ -1,12 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
+import SessionLoading from "../../components/SessionLoading";
 
 const AppScreen = ({ callRef }) => {
   const videoRef = useRef();
+  const [remoteConnecting, setRemoteConnecting] = useState(true);
 
   useEffect(() => {
+    // When call is accepted
     callRef.current.on("stream", function (remoteStream) {
-      //alert("Accepted");
-      //console.log("Stream" + remoteStream);
+      setRemoteConnecting(false);
       videoRef.current.srcObject = remoteStream;
       videoRef.current.play();
     });
@@ -14,6 +16,7 @@ const AppScreen = ({ callRef }) => {
 
   return (
     <div className="h-screen bg-gray-700">
+      {remoteConnecting && <SessionLoading />}
       <video ref={videoRef} style={{ width: "100vw", height: "100vh" }} />
     </div>
   );
