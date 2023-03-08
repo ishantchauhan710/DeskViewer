@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import Loading from "../../components/Loading";
 import { useNavigate } from "react-router-dom";
+import SessionInfo from "../../components/SessionInfo";
 
 const ConnectionScreen = () => {
-  const [remoteId, setRemoteId] = useState("");
+  const [remoteId, setRemoteId] = useState("1234567890");
   const [remoteConnecting, setRemoteConnecting] = useState(false);
   const navigate = useNavigate();
 
@@ -13,7 +14,7 @@ const ConnectionScreen = () => {
       return;
     }
     //setRemoteConnecting(true);
-    navigate("/app");
+    //navigate("/app");
   };
 
   return (
@@ -68,6 +69,7 @@ const ConnectionScreen = () => {
           </button>
         </div>
       </div>
+      <SessionInfo />
     </div>
   );
 };
