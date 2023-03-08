@@ -2,15 +2,22 @@ import { useEffect, useRef, useState } from "react";
 import Loading from "../../components/Loading";
 import { useNavigate } from "react-router-dom";
 import SessionInfo from "../../components/SessionInfo";
-import {useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Peer } from "peerjs";
+import {
+  setRemoteConnectionId,
+  setSessionStartTime,
+  setShowSessionDialog,
+  setUserConnectionId,
+} from "../../states/connectionSlice";
 
 const ConnectionScreen = ({ callRef }) => {
   const [remoteConnecting, setRemoteConnecting] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const [userId, setUserId] = useState("1234567890");
-  const [remoteId, setRemoteId] = useState("1234567890");
+  const [userId, setUserId] = useState("");
+  const [remoteId, setRemoteId] = useState("");
   const peerInstance = useRef(null);
 
   const showSessionDialog = useSelector(
@@ -64,6 +71,11 @@ const ConnectionScreen = ({ callRef }) => {
           .then((mediaStream) => {
             // Answer call with screen's display data stream
             call.answer(mediaStream);
+
+            dispatch(setUserConnectionId(userId));
+            dispatch(setRemoteConnectionId(remoteId));
+            dispatch(setSessionStartTime(new Date()));
+            dispatch(setShowSessionDialog(true));
 
             // FOR PLAYING AUDIO OF REMOTE
             // call.on("stream", function (remoteStream) {
