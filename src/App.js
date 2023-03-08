@@ -1,5 +1,7 @@
+import ConnectionScreen from "./screens/connection/ConnectionScreen";
+
 function App() {
-  return <div className="bg-red-400">Hello World</div>;
+  return <ConnectionScreen />;
 }
 
 export default App;
