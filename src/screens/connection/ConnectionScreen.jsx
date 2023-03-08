@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setShowSessionDialog } from "../../states/connectionSlice";
 import { Peer } from "peerjs";
 
-const ConnectionScreen = () => {
+const ConnectionScreen = ({ callRef }) => {
   const [remoteConnecting, setRemoteConnecting] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -91,12 +91,12 @@ const ConnectionScreen = () => {
       .then((mediaStream) => {
         // Make call to remote
         const call = peerInstance.current.call(remoteId, mediaStream);
-
+        callRef.current = call;
+        navigate("/app");
         // When call is accepted
-        call.on("stream", (remoteStream) => {
-          //alert("Accepted");
-          return <div>Hello</div>;
-        });
+        //call.on("stream", (remoteStream) => {
+        //alert("Accepted");
+        //});
       });
 
     //navigate("/app");
