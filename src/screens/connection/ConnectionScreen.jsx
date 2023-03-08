@@ -2,11 +2,18 @@ import React, { useState } from "react";
 import Loading from "../../components/Loading";
 import { useNavigate } from "react-router-dom";
 import SessionInfo from "../../components/SessionInfo";
+import { useDispatch, useSelector } from "react-redux";
+import { setShowSessionDialog } from "../../states/connectionSlice";
 
 const ConnectionScreen = () => {
   const [remoteId, setRemoteId] = useState("1234567890");
   const [remoteConnecting, setRemoteConnecting] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const showSessionDialog = useSelector(
+    (state) => state.connection.showSessionDialog
+  );
 
   const connect = () => {
     if (!remoteId || remoteId.length < 10) {
@@ -15,6 +22,7 @@ const ConnectionScreen = () => {
     }
     //setRemoteConnecting(true);
     //navigate("/app");
+    dispatch(setShowSessionDialog(true));
   };
 
   return (
@@ -69,7 +77,7 @@ const ConnectionScreen = () => {
           </button>
         </div>
       </div>
-      <SessionInfo />
+      {showSessionDialog && <SessionInfo />}
     </div>
   );
 };
