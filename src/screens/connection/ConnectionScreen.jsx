@@ -55,7 +55,7 @@ const ConnectionScreen = ({ callRef }) => {
       },
     };
 
-    const peer = new Peer(uid, peerOptions);
+    const peer = new Peer(uid); //, peerOptions);
 
     // Receive call
     peer.on("call", (call) => {
@@ -87,16 +87,16 @@ const ConnectionScreen = ({ callRef }) => {
 
     // Do not share your video and audio if you are connecting to remote
     navigator.mediaDevices
-      .getUserMedia({ video: false, audio: true })
+      .getUserMedia({ video: true, audio: true })
       .then((mediaStream) => {
         // Make call to remote
         const call = peerInstance.current.call(remoteId, mediaStream);
+
         callRef.current = call;
         navigate("/app");
         // When call is accepted
-        //call.on("stream", (remoteStream) => {
-        //alert("Accepted");
-        //});
+        // call.on("stream", (remoteStream) => {
+        // });
       });
 
     //navigate("/app");
