@@ -1,28 +1,75 @@
-import React, { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Loading from "../../components/Loading";
 import { useNavigate } from "react-router-dom";
 import SessionInfo from "../../components/SessionInfo";
 import { useDispatch, useSelector } from "react-redux";
 import { setShowSessionDialog } from "../../states/connectionSlice";
+import { Peer } from "peerjs";
 
 const ConnectionScreen = () => {
-  const [remoteId, setRemoteId] = useState("1234567890");
   const [remoteConnecting, setRemoteConnecting] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const [userId, setUserId] = useState("1234567890");
+  const [remoteId, setRemoteId] = useState("1234567890");
+  const peerInstance = useRef(null);
+
   const showSessionDialog = useSelector(
     (state) => state.connection.showSessionDialog
   );
+
+  useEffect(() => {
+    const max = 9999999999;
+    const min = 1000000000;
+    const uid = Math.floor(Math.random() * (max - min + 1)) + min;
+
+    setUserId(uid);
+    const peer = new Peer(uid);
+
+    // Receive call
+    peer.on("call", (call) => {
+      if (window.confirm("Incoming call from") === true) {
+        navigator.mediaDevices
+          .getDisplayMedia({ video: true, audio: true })
+          .then((mediaStream) => {
+            // Answer call with screen's display data stream
+            call.answer(mediaStream);
+
+            // FOR AUDIO
+            // call.on("stream", function (remoteStream) {
+            //   remoteVideoRef.current.srcObject = remoteStream;
+            //   remoteVideoRef.current.play();
+            // });
+          });
+      }
+    });
+
+    peerInstance.current = peer;
+  }, []);
 
   const connect = () => {
     if (!remoteId || remoteId.length < 10) {
       alert("Invalid Remote ID");
       return;
     }
-    //setRemoteConnecting(true);
+    setRemoteConnecting(true);
+
+    // Do not share your video and audio if you are connecting to remote
+    navigator.mediaDevices
+      .getUserMedia({ video: false, audio: true })
+      .then((mediaStream) => {
+        // Make call to remote
+        const call = peerInstance.current.call(remoteId, mediaStream);
+
+        // When call is accepted
+        call.on("stream", (remoteStream) => {
+          alert("Accepted");
+        });
+      });
+
     //navigate("/app");
-    dispatch(setShowSessionDialog(true));
+    //dispatch(setShowSessionDialog(true));
   };
 
   return (
@@ -46,7 +93,7 @@ const ConnectionScreen = () => {
           <input
             type="text"
             placeholder="XXXXXXXXXX"
-            value="9876543210"
+            value={userId}
             disabled
             className="w-full text-xl block overflow-hidden rounded-md text-gray-900 border border-gray-200 px-3 py-2 shadow-sm"
           />
