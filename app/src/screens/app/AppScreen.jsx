@@ -68,7 +68,6 @@ const AppScreen = ({ callRef, socket }) => {
 
       // -------- MOUSE LMB (0), MMB (1), RMB (2) CLICK -------
       document.addEventListener("mousedown", (e) => {
-        console.log("Click " + e.button)
         socket.emit("mousedown", {
           userId: userId,
           remoteId: remoteId,
@@ -78,24 +77,12 @@ const AppScreen = ({ callRef, socket }) => {
 
       // ------- SCROLL ----------
 
-      let previousScrollPosition = 0;
-
-      const isScrollingDown = () => {
-        let goingDown = false;
-        let scrollPosition = window.pageYOffset;
-        if (scrollPosition > previousScrollPosition) {
-          goingDown = true;
-        }
-        previousScrollPosition = scrollPosition;
-        return goingDown;
-      };
-
-      document.addEventListener("scroll", (e) => {
-        const scrollingDown = isScrollingDown();
+      document.addEventListener("wheel", (e) => {
+        console.log("Scrolling " + e.deltaY)
         socket.emit("scroll", {
           userId: userId,
           remoteId: remoteId,
-          event: { down: scrollingDown },
+          event: { scroll: e.deltaY },
         });
       });
     }

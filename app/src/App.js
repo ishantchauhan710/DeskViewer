@@ -34,7 +34,7 @@ const App = () => {
 
     
     socket.on("scroll", (event) => {
-      console.log(`Scroll: down=${event.down}`);
+      console.log(`Scroll: ${event.scroll}`);
     });
 
     
