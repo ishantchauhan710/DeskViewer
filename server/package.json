@@ -1,0 +1,11 @@
+{
+  "name": "deskviewer",
+  "version": "1.0.0",
+  "description": "A remote access app",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ishant",
+  "license": "ISC"
+}
