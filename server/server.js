@@ -35,6 +35,12 @@ io.on("connection", function (socket) {
   socket.on("scroll", ({ userId, remoteId, event }) => {
     io.to("User" + remoteId).emit("scroll", event);
   });
+
+  socket.on("keydown", ({ userId, remoteId, event }) => {
+    io.to("User" + remoteId).emit("keydown", event);
+  });
+
+  
   
 
   // socket.on("event", ({ userId, remoteId, event }) => {

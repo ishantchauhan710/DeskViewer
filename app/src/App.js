@@ -23,7 +23,6 @@ const App = () => {
       console.log("Socket disconnected");
     });
 
-
     socket.on("mousemove", (event) => {
       //console.log(`Mousemove: x=${event.x} y=${event.y}`);
     });
@@ -32,16 +31,13 @@ const App = () => {
       console.log(`Mouse down: ${event.button}`);
     });
 
-    
     socket.on("scroll", (event) => {
       console.log(`Scroll: ${event.scroll}`);
     });
 
-    
-
-    
-
-
+    socket.on("keydown", (event) => {
+      console.log(`Key pressed: ${event.keyCode}`);
+    });
   }, []);
 
   const router = createBrowserRouter([

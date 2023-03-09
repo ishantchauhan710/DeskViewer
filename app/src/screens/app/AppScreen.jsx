@@ -85,6 +85,17 @@ const AppScreen = ({ callRef, socket }) => {
           event: { scroll: e.deltaY },
         });
       });
+
+
+      // ------- KEYBOARD ----------
+      document.addEventListener("keydown", (e) => {
+        socket.emit("keydown", {
+          userId: userId,
+          remoteId: remoteId,
+          event: { keyCode: e.key },
+        });
+      });
+
     }
   }, [socket]);
 
