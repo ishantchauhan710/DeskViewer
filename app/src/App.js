@@ -14,9 +14,9 @@ const App = () => {
       console.log("Socket connected");
     });
 
-    socket.on("action", (data) => {
-      console.log("Event recieved: " + data);
-      alert(data);
+    socket.on("mousemove", (event) => {
+      console.log(`mousemove: x=${event.x} y=${event.y}`);
+      //alert(data);
     });
 
     socket.on("connect_error", (e) => {

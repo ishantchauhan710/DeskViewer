@@ -23,13 +23,19 @@ io.on("connection", function (socket) {
     socket.join(data);
   });
 
-  socket.on("event", ({ userId, remoteId, event }) => {
-    // Detect when user presses keys on his computer and tell the changes to other user
-    console.log(`Event sent by ${userId} to ${remoteId}`);
-
-    io.to("User"+remoteId).emit("action", event);
-    //socket.broadcast.emit("action", event);
+  // ------ HANDLE MOUSE AND KEY EVENTS --------
+  socket.on("mousemove", ({ userId, remoteId, event }) => {
+    io.to("User" + remoteId).emit("mousemove", event);
+    //console.log(`Event sent by ${userId} to ${remoteId}`);
   });
+
+  // socket.on("event", ({ userId, remoteId, event }) => {
+  //   // Detect when user presses keys on his computer and tell the changes to other user
+  //   console.log(`Event sent by ${userId} to ${remoteId}`);
+
+  //   io.to("User"+remoteId).emit("action", event);
+  //   //socket.broadcast.emit("action", event);
+  // });
 });
 
 server.listen(5000, () => {

@@ -47,22 +47,42 @@ const AppScreen = ({ callRef, socket }) => {
   // Handling key press
   useEffect(() => {
     if (socket) {
-      const handleEsc = (event) => {
-        if (event.keyCode === 27) {
-          console.log(`Event emitted by ${userId} to ${remoteId}`);
-          // Send event to server which will share it with remote
-          socket.emit("event", {
+      // -------- GET MOUSE CURSOR COORDINATES -------
+      let mousePos = null;
+      // Whenever user moves cursor, save its coordinates in a variable
+      document.addEventListener("mousemove", (e) => {
+        mousePos = e;
+      });
+
+      // Every 100ms delay, share coordinates with connected user
+      setInterval(() => {
+        if (mousePos) {
+          socket.emit("mousemove", {
             userId: userId,
             remoteId: remoteId,
-            event: "Escape key pressed",
+            event: { x: mousePos.pageX, y: mousePos.pageY },
           });
         }
-      };
-      window.addEventListener("keydown", handleEsc);
+        //console.log("Socket sent" + mousePos.pageX)
+      }, 100);
 
-      return () => {
-        window.removeEventListener("keydown", handleEsc);
-      };
+      // const handleEsc = (event) => {
+      //   if (event.keyCode === 27) {
+      //     console.log(`Event emitted by ${userId} to ${remoteId}`);
+      //     // Send event to server which will share it with remote
+      //     socket.emit("event", {
+      //       userId: userId,
+      //       remoteId: remoteId,
+      //       event: "Escape key pressed",
+      //     });
+      //   }
+      // };
+
+      // window.addEventListener("keydown", handleEsc);
+
+      // return () => {
+      //   window.removeEventListener("keydown", handleEsc);
+      // };
     }
   }, [socket]);
 
