@@ -2,9 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   showSessionDialog: false,
-  userConnectionId: 0,
-  remoteConnectionId: 0,
-  sessionStartTime: 0,
+  userConnectionId: null,
+  remoteConnectionId: null,
+  sessionStartTime: null,
 };
 
 const connectionSlice = createSlice({

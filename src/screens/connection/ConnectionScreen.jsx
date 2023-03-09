@@ -30,6 +30,7 @@ const ConnectionScreen = ({ callRef }) => {
     const uid = Math.floor(Math.random() * (max - min + 1)) + min;
 
     setUserId(uid);
+    dispatch(setUserConnectionId(uid));
 
     const peerOptions = {
       host: "127.0.0.1",
@@ -65,15 +66,14 @@ const ConnectionScreen = ({ callRef }) => {
 
     // Receive call
     peer.on("call", (call) => {
-      if (window.confirm("Incoming call from") === true) {
+      if (window.confirm("Incoming call from " + call.peer) === true) {
         navigator.mediaDevices
           .getDisplayMedia({ video: true, audio: true })
           .then((mediaStream) => {
             // Answer call with screen's display data stream
             call.answer(mediaStream);
+            dispatch(setRemoteConnectionId(call.peer));
 
-            dispatch(setUserConnectionId(userId));
-            dispatch(setRemoteConnectionId(remoteId));
             dispatch(setSessionStartTime(new Date()));
             dispatch(setShowSessionDialog(true));
 
@@ -144,7 +144,10 @@ const ConnectionScreen = ({ callRef }) => {
             placeholder="9876543210"
             className="w-full text-xl block overflow-hidden rounded-md text-gray-900 border border-gray-200 px-3 py-2 shadow-sm focus:outline-none"
             value={remoteId}
-            onChange={(e) => setRemoteId(e.target.value)}
+            onChange={(e) => {
+              setRemoteId(e.target.value);
+              dispatch(setRemoteConnectionId(e.target.value));
+            }}
           />
         </div>
         <div className="w-9/12 mt-6">
