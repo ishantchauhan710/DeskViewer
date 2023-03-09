@@ -3,13 +3,18 @@ import { BsFillCheckCircleFill } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { setShowSessionDialog } from "../states/connectionSlice";
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
 
 const SessionInfo = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const closeSession = () => {
     if (window.confirm("Are you sure you want to end this session")) {
       dispatch(setShowSessionDialog(false));
+      if (sessionMode === 1) {
+        navigate("/");
+      }
     }
   };
 

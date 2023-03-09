@@ -29,6 +29,14 @@ const AppScreen = ({ callRef }) => {
       videoRef.current.srcObject = remoteStream;
       videoRef.current.play();
     });
+
+    callRef.current.on("close", function () {
+      alert("Connection closed");
+    });
+
+    callRef.current.on("error", function () {
+      alert("Connection error");
+    });
   }, []);
 
   return (

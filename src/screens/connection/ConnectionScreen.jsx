@@ -24,6 +24,8 @@ const ConnectionScreen = ({ callRef }) => {
   const [remoteId, setRemoteId] = useState("");
   const peerInstance = useRef(null);
 
+  const remoteVideoRef = useRef();
+
   const showSessionDialog = useSelector(
     (state) => state.connection.showSessionDialog
   );
@@ -95,10 +97,10 @@ const ConnectionScreen = ({ callRef }) => {
             dispatch(setShowSessionDialog(true));
 
             // FOR PLAYING AUDIO OF REMOTE
-            // call.on("stream", function (remoteStream) {
-            //   remoteVideoRef.current.srcObject = remoteStream;
-            //   remoteVideoRef.current.play();
-            // });
+            call.on("stream", function (remoteStream) {
+              remoteVideoRef.current.srcObject = remoteStream;
+              remoteVideoRef.current.play();
+            });
           });
       }
     });
@@ -194,6 +196,11 @@ const ConnectionScreen = ({ callRef }) => {
           </button>
         </div>
       </div>
+      <div className="hidden">
+        <video ref={remoteVideoRef} />
+        Hi
+      </div>
+
       {showSessionDialog && <SessionInfo />}
     </div>
   );
