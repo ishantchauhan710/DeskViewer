@@ -10,9 +10,12 @@ import {
   setShowSessionDialog,
   setUserConnectionId,
 } from "../../states/connectionSlice";
+import { toast, ToastContainer } from "react-toastify";
 
 const ConnectionScreen = ({ callRef }) => {
   const [remoteConnecting, setRemoteConnecting] = useState(false);
+  const [showCopied, setShowCopied] = useState(false);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -23,6 +26,19 @@ const ConnectionScreen = ({ callRef }) => {
   const showSessionDialog = useSelector(
     (state) => state.connection.showSessionDialog
   );
+
+  const handleCopied = (e) => {
+    navigator.clipboard.writeText(e.target.value);
+    setShowCopied(true);
+  };
+
+  useEffect(() => {
+    if (showCopied) {
+      setTimeout(() => {
+        setShowCopied(false);
+      }, 2000);
+    }
+  }, [showCopied]);
 
   useEffect(() => {
     const max = 9999999999;
@@ -90,10 +106,16 @@ const ConnectionScreen = ({ callRef }) => {
   }, []);
 
   const connect = () => {
+    console.log(`Id: ${userId}\nRemote: ${remoteId}`);
+
     if (!remoteId || remoteId.length < 10) {
       alert("Invalid Remote ID");
       return;
+    } else if (parseInt(remoteId) === parseInt(userId)) {
+      alert("User ID and Remote ID cannot be same");
+      return;
     }
+
     setRemoteConnecting(true);
 
     // Do not share your video and audio if you are connecting to remote
@@ -125,13 +147,18 @@ const ConnectionScreen = ({ callRef }) => {
         <div className="w-9/12">
           <div className="w-full text-md font-regular text-gray-700">
             Your Connection Id
+            {showCopied && (
+              <span className="ml-1 text-green-700 text-xs">(Copied)</span>
+            )}
           </div>
           <input
-            type="text"
+            type="number"
             placeholder="XXXXXXXXXX"
             value={userId}
-            disabled
-            className="w-full text-xl block overflow-hidden rounded-md text-gray-900 border border-gray-200 px-3 py-2 shadow-sm"
+            readOnly
+            className="w-full text-xl block overflow-hidden rounded-md text-gray-900 border border-gray-200 px-3 py-2 shadow-sm focus:outline-none cursor-pointer"
+            title="Click here to copy"
+            onClick={handleCopied}
           />
         </div>
 
@@ -140,7 +167,7 @@ const ConnectionScreen = ({ callRef }) => {
             Remote Connection Id
           </div>
           <input
-            type="text"
+            type="number"
             placeholder="9876543210"
             className="w-full text-xl block overflow-hidden rounded-md text-gray-900 border border-gray-200 px-3 py-2 shadow-sm focus:outline-none"
             value={remoteId}
