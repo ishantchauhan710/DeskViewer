@@ -26,8 +26,16 @@ io.on("connection", function (socket) {
   // ------ HANDLE MOUSE AND KEY EVENTS --------
   socket.on("mousemove", ({ userId, remoteId, event }) => {
     io.to("User" + remoteId).emit("mousemove", event);
-    //console.log(`Event sent by ${userId} to ${remoteId}`);
   });
+
+  socket.on("mousedown", ({ userId, remoteId, event }) => {
+    io.to("User" + remoteId).emit("mousedown", event);
+  });
+
+  socket.on("scroll", ({ userId, remoteId, event }) => {
+    io.to("User" + remoteId).emit("scroll", event);
+  });
+  
 
   // socket.on("event", ({ userId, remoteId, event }) => {
   //   // Detect when user presses keys on his computer and tell the changes to other user

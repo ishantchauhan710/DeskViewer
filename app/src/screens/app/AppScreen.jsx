@@ -47,8 +47,9 @@ const AppScreen = ({ callRef, socket }) => {
   // Handling key press
   useEffect(() => {
     if (socket) {
-      // -------- GET MOUSE CURSOR COORDINATES -------
+      // -------- MOUSE CURSOR COORDINATES -------
       let mousePos = null;
+      let lastPos = null;
       // Whenever user moves cursor, save its coordinates in a variable
       document.addEventListener("mousemove", (e) => {
         mousePos = e;
@@ -63,26 +64,40 @@ const AppScreen = ({ callRef, socket }) => {
             event: { x: mousePos.pageX, y: mousePos.pageY },
           });
         }
-        //console.log("Socket sent" + mousePos.pageX)
       }, 100);
 
-      // const handleEsc = (event) => {
-      //   if (event.keyCode === 27) {
-      //     console.log(`Event emitted by ${userId} to ${remoteId}`);
-      //     // Send event to server which will share it with remote
-      //     socket.emit("event", {
-      //       userId: userId,
-      //       remoteId: remoteId,
-      //       event: "Escape key pressed",
-      //     });
-      //   }
-      // };
+      // -------- MOUSE LMB (0), MMB (1), RMB (2) CLICK -------
+      document.addEventListener("mousedown", (e) => {
+        console.log("Click " + e.button)
+        socket.emit("mousedown", {
+          userId: userId,
+          remoteId: remoteId,
+          event: { button: e.button },
+        });
+      });
 
-      // window.addEventListener("keydown", handleEsc);
+      // ------- SCROLL ----------
 
-      // return () => {
-      //   window.removeEventListener("keydown", handleEsc);
-      // };
+      let previousScrollPosition = 0;
+
+      const isScrollingDown = () => {
+        let goingDown = false;
+        let scrollPosition = window.pageYOffset;
+        if (scrollPosition > previousScrollPosition) {
+          goingDown = true;
+        }
+        previousScrollPosition = scrollPosition;
+        return goingDown;
+      };
+
+      document.addEventListener("scroll", (e) => {
+        const scrollingDown = isScrollingDown();
+        socket.emit("scroll", {
+          userId: userId,
+          remoteId: remoteId,
+          event: { down: scrollingDown },
+        });
+      });
     }
   }, [socket]);
 

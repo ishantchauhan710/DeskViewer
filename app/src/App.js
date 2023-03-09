@@ -14,11 +14,6 @@ const App = () => {
       console.log("Socket connected");
     });
 
-    socket.on("mousemove", (event) => {
-      console.log(`mousemove: x=${event.x} y=${event.y}`);
-      //alert(data);
-    });
-
     socket.on("connect_error", (e) => {
       console.log("Socket connection error, retrying..." + e);
       setTimeout(() => socket.connect(), 5000);
@@ -27,6 +22,26 @@ const App = () => {
     socket.on("disconnect", () => {
       console.log("Socket disconnected");
     });
+
+
+    socket.on("mousemove", (event) => {
+      //console.log(`Mousemove: x=${event.x} y=${event.y}`);
+    });
+
+    socket.on("mousedown", (event) => {
+      console.log(`Mouse down: ${event.button}`);
+    });
+
+    
+    socket.on("scroll", (event) => {
+      console.log(`Scroll: down=${event.down}`);
+    });
+
+    
+
+    
+
+
   }, []);
 
   const router = createBrowserRouter([
