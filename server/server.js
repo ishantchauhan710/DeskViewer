@@ -1,8 +1,14 @@
 const express = require("express");
 const app = express();
-const ExpressPeerServer = require("peer").ExpressPeerServer;
 const socketIo = require("socket.io");
 const server = require("http").createServer(app);
+//const ExpressPeerServer = require("peer").ExpressPeerServer;
+// app.use(
+//   "/peerjs",
+//   ExpressPeerServer(server, {
+//     debug: true,
+//   })
+// );
 
 const io = socketIo(server, {
   cors: {
@@ -10,18 +16,22 @@ const io = socketIo(server, {
   },
 });
 
-app.use(
-  "/peerjs",
-  ExpressPeerServer(server, {
-    debug: true,
-  })
-);
-
 io.on("connection", function (socket) {
-  //console.log("Made socket connection");
   socket.on("join", function (data) {
     console.log("User joined " + data);
+    // Create a room for client
+    socket.join(data);
+  });
+
+  socket.on("event", ({ userId, remoteId, event }) => {
+    // Detect when user presses keys on his computer and tell the changes to other user
+    console.log(`Event sent by ${userId} to ${remoteId}`);
+
+    io.to("User"+remoteId).emit("action", event);
+    //socket.broadcast.emit("action", event);
   });
 });
 
-server.listen(5000, "127.0.0.1");
+server.listen(5000, () => {
+  console.log("Server started");
+});

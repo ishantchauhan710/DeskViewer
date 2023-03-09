@@ -13,7 +13,7 @@ import {
 } from "../../states/connectionSlice";
 import { toast, ToastContainer } from "react-toastify";
 
-const ConnectionScreen = ({ callRef }) => {
+const ConnectionScreen = ({ callRef, socket }) => {
   const [remoteConnecting, setRemoteConnecting] = useState(false);
   const [showCopied, setShowCopied] = useState(false);
 
@@ -51,6 +51,13 @@ const ConnectionScreen = ({ callRef }) => {
     setUserId(uid);
     dispatch(setUserConnectionId(uid));
 
+    socket.emit("join", "User" + uid);
+
+    // socket.on("action", (data) => {
+    //   console.log("Event recieved: " + data);
+    //   alert(data);
+    // });
+
     const peerOptions = {
       host: "127.0.0.1",
       port: 5000,
@@ -82,17 +89,19 @@ const ConnectionScreen = ({ callRef }) => {
 
     //FOR CUSTOM SERVER: const peer = new Peer(uid,peerOptions);
     const peer = new Peer(uid);
-    
+
     // Receive call
     peer.on("call", (call) => {
       if (window.confirm("Incoming call from " + call.peer) === true) {
         navigator.mediaDevices
           .getDisplayMedia({ video: true, audio: true })
           .then((mediaStream) => {
+            setRemoteId(call.peer);
+            dispatch(setRemoteConnectionId(call.peer));
+
             // Answer call with screen's display data stream
             call.answer(mediaStream);
             dispatch(setSessionMode(0));
-            dispatch(setRemoteConnectionId(call.peer));
             dispatch(setSessionStartTime(new Date()));
             dispatch(setShowSessionDialog(true));
 

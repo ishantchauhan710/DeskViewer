@@ -6,16 +6,18 @@ import io from "socket.io-client";
 
 const App = () => {
   const callRef = useRef();
+  const socket = io("http://127.0.0.1:5000");
 
-  // Socket
+  // Socket connection
   useEffect(() => {
-    const socket = io("http://127.0.0.1:5000");
-
     socket.on("connect", () => {
       console.log("Socket connected");
     });
 
-    socket.emit("join", "DATA: ishant");
+    socket.on("action", (data) => {
+      console.log("Event recieved: " + data);
+      alert(data);
+    });
 
     socket.on("connect_error", (e) => {
       console.log("Socket connection error, retrying..." + e);
@@ -30,14 +32,14 @@ const App = () => {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <ConnectionScreen callRef={callRef} />,
+      element: <ConnectionScreen callRef={callRef} socket={socket} />,
     },
     {
       path: "/app",
-      element: <AppScreen callRef={callRef} />,
+      element: <AppScreen callRef={callRef} socket={socket} />,
     },
   ]);
-  return <RouterProvider router={router} />;
+  return socket && <RouterProvider router={router} />;
 };
 
 export default App;

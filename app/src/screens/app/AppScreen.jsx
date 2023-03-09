@@ -10,7 +10,7 @@ import {
 
 import { ImConnection } from "react-icons/im";
 
-const AppScreen = ({ callRef }) => {
+const AppScreen = ({ callRef, socket }) => {
   const videoRef = useRef();
   const [remoteConnecting, setRemoteConnecting] = useState(true);
   const dispatch = useDispatch();
@@ -18,6 +18,9 @@ const AppScreen = ({ callRef }) => {
   const showSessionDialog = useSelector(
     (state) => state.connection.showSessionDialog
   );
+
+  const userId = useSelector((state) => state.connection.userConnectionId);
+  const remoteId = useSelector((state) => state.connection.remoteConnectionId);
 
   useEffect(() => {
     // When call is accepted
@@ -40,6 +43,28 @@ const AppScreen = ({ callRef }) => {
       console.log("Error");
     });
   }, []);
+
+  // Handling key press
+  useEffect(() => {
+    if (socket) {
+      const handleEsc = (event) => {
+        if (event.keyCode === 27) {
+          console.log(`Event emitted by ${userId} to ${remoteId}`);
+          // Send event to server which will share it with remote
+          socket.emit("event", {
+            userId: userId,
+            remoteId: remoteId,
+            event: "Escape key pressed",
+          });
+        }
+      };
+      window.addEventListener("keydown", handleEsc);
+
+      return () => {
+        window.removeEventListener("keydown", handleEsc);
+      };
+    }
+  }, [socket]);
 
   return (
     <div className="h-screen bg-gray-700">
