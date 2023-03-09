@@ -15,6 +15,7 @@ const SessionInfo = () => {
       if (sessionMode === 1) {
         navigate("/");
       }
+      window.location.reload();
     }
   };
 

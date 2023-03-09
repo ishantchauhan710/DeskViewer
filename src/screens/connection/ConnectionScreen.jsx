@@ -82,7 +82,7 @@ const ConnectionScreen = ({ callRef }) => {
 
     //FOR CUSTOM SERVER: const peer = new Peer(uid,peerOptions);
     const peer = new Peer(uid);
-
+    
     // Receive call
     peer.on("call", (call) => {
       if (window.confirm("Incoming call from " + call.peer) === true) {

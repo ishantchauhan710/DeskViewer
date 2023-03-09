@@ -32,10 +32,12 @@ const AppScreen = ({ callRef }) => {
 
     callRef.current.on("close", function () {
       alert("Connection closed");
+      console.log("Closed");
     });
 
     callRef.current.on("error", function () {
       alert("Connection error");
+      console.log("Error");
     });
   }, []);
 
