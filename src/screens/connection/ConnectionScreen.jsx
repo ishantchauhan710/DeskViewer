@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Peer } from "peerjs";
 import {
   setRemoteConnectionId,
+  setSessionMode,
   setSessionStartTime,
   setShowSessionDialog,
   setUserConnectionId,
@@ -88,8 +89,8 @@ const ConnectionScreen = ({ callRef }) => {
           .then((mediaStream) => {
             // Answer call with screen's display data stream
             call.answer(mediaStream);
+            dispatch(setSessionMode(0));
             dispatch(setRemoteConnectionId(call.peer));
-
             dispatch(setSessionStartTime(new Date()));
             dispatch(setShowSessionDialog(true));
 
@@ -110,6 +111,9 @@ const ConnectionScreen = ({ callRef }) => {
 
     if (!remoteId || remoteId.length < 10) {
       alert("Invalid Remote ID");
+      return;
+    } else if (!remoteId.match(/^\d+$/)) {
+      alert("Remote ID cannot be a string");
       return;
     } else if (parseInt(remoteId) === parseInt(userId)) {
       alert("User ID and Remote ID cannot be same");
@@ -152,7 +156,7 @@ const ConnectionScreen = ({ callRef }) => {
             )}
           </div>
           <input
-            type="number"
+            type="text"
             placeholder="XXXXXXXXXX"
             value={userId}
             readOnly
@@ -167,7 +171,7 @@ const ConnectionScreen = ({ callRef }) => {
             Remote Connection Id
           </div>
           <input
-            type="number"
+            type="text"
             placeholder="9876543210"
             className="w-full text-xl block overflow-hidden rounded-md text-gray-900 border border-gray-200 px-3 py-2 shadow-sm focus:outline-none"
             value={remoteId}

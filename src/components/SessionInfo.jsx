@@ -8,7 +8,9 @@ const SessionInfo = () => {
   const dispatch = useDispatch();
 
   const closeSession = () => {
-    dispatch(setShowSessionDialog(false));
+    if (window.confirm("Are you sure you want to end this session")) {
+      dispatch(setShowSessionDialog(false));
+    }
   };
 
   const userId = useSelector((state) => state.connection.userConnectionId);
@@ -16,6 +18,8 @@ const SessionInfo = () => {
   const sessionStart = useSelector(
     (state) => state.connection.sessionStartTime
   );
+
+  const sessionMode = useSelector((state) => state.connection.sessionMode);
 
   const [timeElapsed, setTimeElapsed] = useState(false);
 
@@ -43,7 +47,20 @@ const SessionInfo = () => {
   }, []);
 
   return (
-    <div className="fixed flex items-center justify-center inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+    <div
+      onClick={(e) => {
+        e.preventDefault();
+
+        if (sessionMode === 0) {
+          return;
+        }
+
+        if (e.target === e.currentTarget) {
+          dispatch(setShowSessionDialog(false));
+        }
+      }}
+      className="fixed flex items-center justify-center inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"
+    >
       <div className="w-1/2 bg-white rounded-sm">
         <div className=" bg-green-600 text-white text-7xl py-7 flex flex-col items-center justify-center">
           <BsFillCheckCircleFill />

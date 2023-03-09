@@ -5,6 +5,7 @@ const initialState = {
   userConnectionId: null,
   remoteConnectionId: null,
   sessionStartTime: null,
+  sessionMode: null, // 0 (Other's control your pc) | 1 (You control other's pc)
 };
 
 const connectionSlice = createSlice({
@@ -23,6 +24,9 @@ const connectionSlice = createSlice({
     setSessionStartTime(state, action) {
       state.sessionStartTime = action.payload;
     },
+    setSessionMode(state, action) {
+      state.sessionMode = action.payload;
+    },
   },
 });
 
@@ -31,5 +35,6 @@ export const {
   setUserConnectionId,
   setRemoteConnectionId,
   setSessionStartTime,
+  setSessionMode,
 } = connectionSlice.actions;
 export default connectionSlice.reducer;
