@@ -1,6 +1,5 @@
 const path = require("path");
 const { app, BrowserWindow } = require("electron");
-const isDev = require("electron-is-dev");
 const robot = require("robotjs");
 const { desktopCapturer, ipcMain } = require("electron");
 
@@ -16,14 +15,11 @@ function createWindow() {
     },
   });
 
-  win
-    .loadURL(
-      isDev
-        ? "http://localhost:3000"
-        : `file://${path.join(__dirname, "../build/index.html")}`
-    )
+  win.loadURL("http://localhost:3000")   
+
+  //win.loadURL(`file://${path.join(__dirname, "../build/index.html")}`)
     .then(() => {
-      console.log("Window loaded");
+      console.log("Window loaded, URL: " + win.webContents.getURL());
       desktopCapturer
         .getSources({ types: ["screen"] })
         .then(async (sources) => {
@@ -60,20 +56,20 @@ app.on("activate", () => {
 
 ipcMain.on("mousemove", (event, args) => {
   //console.log(`Mousemove: x=${args.x} y=${args.y}`);
-  robot.moveMouseSmooth(args.x, args.y);
+  //robot.moveMouseSmooth(args.x, args.y);
 });
 
 ipcMain.on("mousedown", (event, args) => {
   //console.log(`Mouse down: ${args.button}`);
-  robot.mouseClick();
+  //robot.mouseClick();
 });
 
 ipcMain.on("scroll", (event, args) => {
   //console.log(`Scroll: ${args.scroll}`);
-  robot.scrollMouse(0, args.scroll);
+  //robot.scrollMouse(0, args.scroll);
 });
 
 ipcMain.on("keydown", (event, args) => {
   //console.log(`Key pressed: ${args.keyCode}`);
-  robot.keyTap("command");
+  //robot.keyTap("command");
 });

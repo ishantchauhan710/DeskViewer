@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { BrowserRouter, HashRouter, Route, Routes } from "react-router-dom";
 import ConnectionScreen from "./screens/connection/ConnectionScreen";
 import AppScreen from "./screens/app/AppScreen";
 import io from "socket.io-client";
@@ -60,23 +60,33 @@ const App = () => {
     });
   }, []);
 
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <ConnectionScreen callRef={callRef} socket={socket} />,
-    },
-    {
-      path: "/app",
-      element: (
-        <AppScreen
-          callRef={callRef}
-          socket={socket}
-          sessionEnded={sessionEnded}
-        />
-      ),
-    },
-  ]);
-  return socket && <RouterProvider router={router} />;
+  return (
+    socket && (
+      <HashRouter>
+        <Routes>
+          <Route
+            path="/"
+            exact
+            element={<ConnectionScreen callRef={callRef} socket={socket} />}
+          />
+          <Route
+            path="/app"
+            element={
+              <AppScreen
+                callRef={callRef}
+                socket={socket}
+                sessionEnded={sessionEnded}
+              />
+            }
+          />
+          <Route
+            path="*"
+            element={<div>DeskViewer Error: Page not found</div>}
+          />
+        </Routes>
+      </HashRouter>
+    )
+  );
 };
 
 export default App;
