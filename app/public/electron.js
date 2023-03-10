@@ -1,7 +1,7 @@
 const path = require("path");
 const { app, BrowserWindow } = require("electron");
 const isDev = require("electron-is-dev");
-
+const robot = require("robotjs");
 const { desktopCapturer, ipcMain } = require("electron");
 
 let win;
@@ -51,18 +51,29 @@ app.on("activate", () => {
   }
 });
 
-ipcMain.on("mousemove", (event,args) => {
+// --------- HANDLE KEYBOARD AND MOUSE EVENTS -------
+
+//robot.moveMouseSmooth(100, 180);
+//robot.mouseClick();
+//robot.scrollMouse(0, -200);
+//robot.keyTap("command")
+
+ipcMain.on("mousemove", (event, args) => {
   //console.log(`Mousemove: x=${args.x} y=${args.y}`);
+  robot.moveMouseSmooth(args.x, args.y);
 });
 
-ipcMain.on("mousedown", (event,args) => {
-  console.log(`Mouse down: ${args.button}`);
+ipcMain.on("mousedown", (event, args) => {
+  //console.log(`Mouse down: ${args.button}`);
+  robot.mouseClick();
 });
 
-ipcMain.on("scroll", (event,args) => {
-  console.log(`Scroll: ${args.scroll}`);
+ipcMain.on("scroll", (event, args) => {
+  //console.log(`Scroll: ${args.scroll}`);
+  robot.scrollMouse(0, args.scroll);
 });
 
-ipcMain.on("keydown", (event,args) => {
-  console.log(`Key pressed: ${args.keyCode}`);
+ipcMain.on("keydown", (event, args) => {
+  //console.log(`Key pressed: ${args.keyCode}`);
+  robot.keyTap("command");
 });
