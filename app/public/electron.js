@@ -50,3 +50,19 @@ app.on("activate", () => {
     createWindow();
   }
 });
+
+ipcMain.on("mousemove", (event,args) => {
+  //console.log(`Mousemove: x=${args.x} y=${args.y}`);
+});
+
+ipcMain.on("mousedown", (event,args) => {
+  console.log(`Mouse down: ${args.button}`);
+});
+
+ipcMain.on("scroll", (event,args) => {
+  console.log(`Scroll: ${args.scroll}`);
+});
+
+ipcMain.on("keydown", (event,args) => {
+  console.log(`Key pressed: ${args.keyCode}`);
+});
