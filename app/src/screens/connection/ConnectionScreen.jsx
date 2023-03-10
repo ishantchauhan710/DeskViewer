@@ -11,7 +11,7 @@ import {
   setShowSessionDialog,
   setUserConnectionId,
 } from "../../states/connectionSlice";
-import { toast, ToastContainer } from "react-toastify";
+const { ipcRenderer } = window.require("electron");
 
 const ConnectionScreen = ({ callRef, socket }) => {
   const [remoteConnecting, setRemoteConnecting] = useState(false);
@@ -22,6 +22,9 @@ const ConnectionScreen = ({ callRef, socket }) => {
 
   const [userId, setUserId] = useState("");
   const [remoteId, setRemoteId] = useState("");
+
+  let sourceId;
+
   const peerInstance = useRef(null);
 
   const remoteVideoRef = useRef();
@@ -93,8 +96,21 @@ const ConnectionScreen = ({ callRef, socket }) => {
     // Receive call
     peer.on("call", (call) => {
       if (window.confirm("Incoming call from " + call.peer) === true) {
+        console.log("Source Id: " + sourceId);
         navigator.mediaDevices
-          .getDisplayMedia({ video: true, audio: true })
+          .getUserMedia({
+            audio: false,
+            video: {
+              mandatory: {
+                chromeMediaSource: "desktop",
+                chromeMediaSourceId: sourceId,
+                minWidth: 1280,
+                maxWidth: 1280,
+                minHeight: 720,
+                maxHeight: 720,
+              },
+            },
+          })
           .then((mediaStream) => {
             setRemoteId(call.peer);
             dispatch(setRemoteConnectionId(call.peer));
@@ -110,8 +126,14 @@ const ConnectionScreen = ({ callRef, socket }) => {
               remoteVideoRef.current.srcObject = remoteStream;
               remoteVideoRef.current.play();
             });
-          });
+          })
+          .catch((e) => console.log("Error: " + e));
       }
+    });
+
+    ipcRenderer.on("SET_SOURCE", async (event, id) => {
+      console.log("Source Id Recieved: " + id);
+      sourceId = id;
     });
 
     peerInstance.current = peer;
@@ -142,7 +164,8 @@ const ConnectionScreen = ({ callRef, socket }) => {
 
         callRef.current = call;
         navigate("/app");
-      });
+      })
+      .catch((e) => console.log("Error: " + e));
   };
 
   return (
