@@ -23,6 +23,10 @@ io.on("connection", function (socket) {
     socket.join(data);
   });
 
+  socket.on("remotedisconnected", ({ remoteId }) => {
+    io.to("User" + remoteId).emit("remotedisconnected");
+  });
+
   // ------ HANDLE MOUSE AND KEY EVENTS --------
   socket.on("mousemove", ({ userId, remoteId, event }) => {
     io.to("User" + remoteId).emit("mousemove", event);
@@ -39,9 +43,6 @@ io.on("connection", function (socket) {
   socket.on("keydown", ({ userId, remoteId, event }) => {
     io.to("User" + remoteId).emit("keydown", event);
   });
-
-  
-  
 
   // socket.on("event", ({ userId, remoteId, event }) => {
   //   // Detect when user presses keys on his computer and tell the changes to other user

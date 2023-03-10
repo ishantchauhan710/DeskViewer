@@ -56,11 +56,6 @@ const ConnectionScreen = ({ callRef, socket }) => {
 
     socket.emit("join", "User" + uid);
 
-    // socket.on("action", (data) => {
-    //   console.log("Event recieved: " + data);
-    //   alert(data);
-    // });
-
     const peerOptions = {
       host: "127.0.0.1",
       port: 5000,
@@ -233,7 +228,7 @@ const ConnectionScreen = ({ callRef, socket }) => {
         Hi
       </div>
 
-      {showSessionDialog && <SessionInfo />}
+      {showSessionDialog && <SessionInfo socket={socket} />}
     </div>
   );
 };

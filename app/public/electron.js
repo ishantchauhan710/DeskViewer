@@ -28,12 +28,10 @@ function createWindow() {
         .getSources({ types: ["screen"] })
         .then(async (sources) => {
           for (const source of sources) {
+            // TODO: Add if condition for multiple sources
             console.log("Sources available: " + source.id);
-            //if (source.name === "deskviewer") {
             console.log("Source id sent: " + source.id);
             win.webContents.send("SET_SOURCE", source.id);
-            // return;
-            //}
           }
         });
     });

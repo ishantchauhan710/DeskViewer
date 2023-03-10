@@ -9,8 +9,9 @@ import {
 } from "../../states/connectionSlice";
 
 import { ImConnection } from "react-icons/im";
+import { Navigate, useNavigate } from "react-router-dom";
 
-const AppScreen = ({ callRef, socket }) => {
+const AppScreen = ({ callRef, socket, sessionEnded }) => {
   const videoRef = useRef();
   const [remoteConnecting, setRemoteConnecting] = useState(true);
   const dispatch = useDispatch();
@@ -21,6 +22,7 @@ const AppScreen = ({ callRef, socket }) => {
 
   const userId = useSelector((state) => state.connection.userConnectionId);
   const remoteId = useSelector((state) => state.connection.remoteConnectionId);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // When call is accepted
@@ -78,14 +80,13 @@ const AppScreen = ({ callRef, socket }) => {
       // ------- SCROLL ----------
 
       document.addEventListener("wheel", (e) => {
-        console.log("Scrolling " + e.deltaY)
+        console.log("Scrolling " + e.deltaY);
         socket.emit("scroll", {
           userId: userId,
           remoteId: remoteId,
           event: { scroll: e.deltaY },
         });
       });
-
 
       // ------- KEYBOARD ----------
       document.addEventListener("keydown", (e) => {
@@ -95,9 +96,15 @@ const AppScreen = ({ callRef, socket }) => {
           event: { keyCode: e.key },
         });
       });
-
     }
   }, [socket]);
+
+  useEffect(() => {
+    if (sessionEnded) {
+      navigate("/");
+      window.location.reload();
+    }
+  }, [sessionEnded]);
 
   return (
     <div className="h-screen bg-gray-700">
@@ -110,7 +117,7 @@ const AppScreen = ({ callRef, socket }) => {
         <span className="ml-2 text-lg">Session Info</span>
       </button>
       {/* {remoteConnecting && <SessionLoading />} */}
-      {showSessionDialog && <SessionInfo />}
+      {showSessionDialog && <SessionInfo socket={socket} />}
     </div>
   );
 };
