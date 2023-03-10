@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const socketIo = require("socket.io");
 const server = require("http").createServer(app);
+
+// --------- UNCOMMENT THIS IF YOU WANT TO USE A PEER SERVER ------------
 //const ExpressPeerServer = require("peer").ExpressPeerServer;
 // app.use(
 //   "/peerjs",

@@ -225,7 +225,6 @@ const ConnectionScreen = ({ callRef, socket }) => {
       </div>
       <div className="hidden">
         <video ref={remoteVideoRef} />
-        Hi
       </div>
 
       {showSessionDialog && <SessionInfo socket={socket} />}

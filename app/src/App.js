@@ -45,17 +45,17 @@ const App = () => {
     });
 
     socket.on("mousedown", (event) => {
-      //console.log(`Mouse down: ${event.button}`);
+      console.log(`Mouse down: ${event.button}`);
       ipcRenderer.send("mousedown", event);
     });
 
     socket.on("scroll", (event) => {
-      //console.log(`Scroll: ${event.scroll}`);
+      console.log(`Scroll: ${event.scroll}`);
       ipcRenderer.send("scroll", event);
     });
 
     socket.on("keydown", (event) => {
-      //console.log(`Key pressed: ${event.keyCode}`);
+      console.log(`Key pressed: ${event.keyCode}`);
       ipcRenderer.send("keydown", event);
     });
   }, []);

@@ -8,6 +8,7 @@ function createWindow() {
   win = new BrowserWindow({
     width: 600,
     height: 600,
+    icon: __dirname + "/img/deskviewer_logo_256.png",
     autoHideMenuBar: true,
     webPreferences: {
       nodeIntegration: true,
@@ -15,9 +16,10 @@ function createWindow() {
     },
   });
 
-  win.loadURL("http://localhost:3000")   
+  win
+    .loadURL("http://localhost:3000")
 
-  //win.loadURL(`file://${path.join(__dirname, "../build/index.html")}`)
+    //win.loadURL(`file://${path.join(__dirname, "../build/index.html")}`)
     .then(() => {
       console.log("Window loaded, URL: " + win.webContents.getURL());
       desktopCapturer
