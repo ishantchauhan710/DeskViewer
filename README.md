@@ -9,7 +9,10 @@ DeskViewer establishes a **peer-to-peer (P2P) connection** between 2 devices for
 Since the build size for .exe, .app and linux executable file exceeds over 200Mb, I have not uploaded the executable files in this repository. However, I have shared a video demo of this project in the link below. Additionally, I have also explained how you can easily generate an executable file of this project for windows, mac and linux!
 
 ## Video Demo 
-Here is a short video on how to use DeskViewer
+[Here](https://www.youtube.com/watch?v=OgqYnuOS-W0) is a short video on how to use DeskViewer
+
+## Blog :writing_hand:
+https://ishantchauhan.hashnode.dev/deskviewer-how-i-created-and-debugged-a-remote-desktop-application
 
 ## DeskViewer Features :fire:
 - **Screen Sharing** - User can share his screen video and audio to a remote user
