@@ -3,7 +3,7 @@
 **DeskViewer** is a cross platform remote desktop controlling application that allows users to access and control a remote computer from anywhere in the world
 
 ## About :dart:
-DeskViewer establishes a **peer-to-peer (P2P) connection** between 2 devices for enabling screen share and makes use of **websockets** to emit keyboard and mouse events. Additionally, the 2 peers can also talk to each other using realtime voice transmission!
+DeskViewer is a desktop app where once you enter the remote device's connection id you will start receiving the screen video and audio of the remote device on your computer. And once you start moving your mouse or pressing keystrokes on your keyboard, the changes will automatically be reflected in the remote's computer
  
 ## Demo
 Since the build size for .exe, .app and linux executable file exceeds over 200Mb, I have not uploaded the executable files in this repository. However, I have shared a video demo of this project in the link below. Additionally, I have also explained how you can easily generate an executable file of this project for windows, mac and linux!
