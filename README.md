@@ -1,4 +1,4 @@
-![](screenshots/screen6.jpg)
+![](screenshots/intro1.png)
 # DeskViewer
 **DeskViewer** is a cross platform remote desktop controlling application that allows users to access and control a remote computer from anywhere in the world
 
@@ -12,9 +12,8 @@ Since the build size for .exe, .app and linux executable file exceeds over 200Mb
 Here is a short video on how to use DeskViewer
 
 ## DeskViewer Features :fire:
-- **Screen Sharing** - User can share his screen to a remote user
+- **Screen Sharing** - User can share his screen video and audio to a remote user
 - **Screen Control** - Remote user can in return control the keyboard and mouse of connected user
-- **Audio Sharing** - Both users can talk to each other in realtime
 
 ## :camera_flash: Screenshots :computer:
 |   |   |   |
@@ -24,7 +23,7 @@ Here is a short video on how to use DeskViewer
 
 ## Built Using :bulb:
 - **Electron** - For building the desktop application
-- **PeerJs** - For transmitting screen video and user audio in realtime
+- **PeerJs** - For transmitting screen video in realtime
 - **Socket.io** - For emitting mouse and keyboard events
 - **RobotJs** - For triggering mouse movement and keystrokes on remote device
 - **NodeJs** - For creating a custom P2P server along with websockets
@@ -33,7 +32,8 @@ Here is a short video on how to use DeskViewer
 - **TailwindCSS** - For designing use interface
 
 ## Running Project :memo:
-To implementing P2P connection for sharing screen and audio, you can use the default peer server provided by the peerjs library. However, sometimes I have noticed that the peer server does not respond correctly and cause websocket connection to fail. Therefore I have implemented a custom peer server along with websocket connections in the backend.
+![](screenshots/deskviewer_working.png)
+To implementing P2P connection for sharing screen, you can use the default peer server provided by the peerjs library. However, sometimes I have noticed that the peer server does not respond correctly and cause websocket connection to fail. Therefore I have implemented a custom peer server along with websocket connections in the backend.
 
 If you want to run this project on your computer, you need to first setup the backend and the desktop application. To do so, follow the below instructions:
 
@@ -86,6 +86,7 @@ npx electron-packager <sourcedir> <appname> --platform=<platform> --arch=<arch> 
 ### Note :bangbang:
 - I have commented the robot.js functions in electron.js file inside the app folder. This is because if you uncomment them and run 2 instances of this app on a same computer, you won't be able to control your mouse
 - I have only tested this application on linux, if you want to create an executable file for windows or mac systems, you need to make few more changes in the electron configuration files. You can refer to [electron-packager](https://www.npmjs.com/package/electron-packager) for that
+- Currently the app uses getDisplayMedia() to share the audio of device however if you want to transmit the audio of user using microphone, you can make use of the getUserMedia() method
 
 ## Contact
 For any queries, you can mail me at developerishant710@gmail.com
