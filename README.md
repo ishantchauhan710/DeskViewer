@@ -1,3 +1,4 @@
+![](screenshots/screen6.jpg)
 # DeskViewer
 **DeskViewer** is a cross platform remote desktop controlling application that allows users to access and control a remote computer from anywhere in the world
 
@@ -15,7 +16,11 @@ Here is a short video on how to use DeskViewer
 - **Screen Control** - Remote user can in return control the keyboard and mouse of connected user
 - **Audio Sharing** - Both users can talk to each other in realtime
 
-:camera_flash: Screenshots :computer:
+## :camera_flash: Screenshots :computer:
+|   |   |   |
+|---|---|---|
+|![](screenshots/screen2.jpg) | ![](screenshots/screen6.jpg)
+|![](screenshots/screen3.jpg) |![](screenshots/screen4.jpg) 
 
 ## Built Using :bulb:
 - **Electron** - For building the desktop application
@@ -59,7 +64,7 @@ npx electronmon .
 ```
 7. Now you should see 2 desktop apps being launched :)
 
-## Generating Exe/ App/ Linux Executable Files :memo:
+## Generating EXE / APP / Linux Executable Files :memo:
 1. To generate an executable file depending upon your platform, open electron.js file and there, comment the following line
 ```
 win.loadURL("http://localhost:3000")
