@@ -67,6 +67,17 @@ npx electronmon .
 ```
 7. Now you should see 2 desktop apps being launched :)
 
+## Common Bugs For Windows
+You may get bugs related to robotjs installation or node-gyp related issues on windows. To prevent them, make sure that
+1. You have installed Visual Studio Build Tools for 'Desktop development with C++', 'MSBuild', 'Windows 10 SDK'. You can get them from: https://visualstudio.microsoft.com/visual-cpp-build-tools/
+2. You have installed Python v2.7.3 as v3.x.x is not supported: https://robotjs.io/docs/building
+3. Also check for missing python packages by writing following commands in app folder: ' python -m ensurepip --upgrade', 'python -m pip install --upgrade setuptools'.
+4. Delete package-lock.json in app folder, write 'npm cache clean --force'
+5. Open powershell as windows administrator and type: 'Set-ExecutionPolicy RemoteSigned -Scope CurrentUser', 'Get-ExecutionPolicy -List'
+4. After installing packages, in app folder's terminal, write 'npx electron-rebuild -f -w robojs'
+5. If that fails, try downgrading your nodejs version or refer to robotjs's github issues section
+
+
 ## Generating EXE / APP / Linux Executable Files :memo:
 1. To generate an executable file depending upon your platform, open electron.js file and there, comment the following line
 ```
